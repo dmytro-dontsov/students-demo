@@ -2,7 +2,7 @@ import express, {type Request, type Response} from 'express';
 const app = express()
 const port = process.env.PORT || 3000
 
-const products = [{title: 'tomato'}, {title: 'orange'}]
+const products = [{id: 1, title: 'tomato'}, {id: 2, title: 'orange'}]
 const addresses = [{id: 1, value: 'Nezalejnosti 17'}, {id: 2, value: 'Salickaga11'}]
 
 app.get('/', (req: Request, res: Response) => {
@@ -10,10 +10,15 @@ app.get('/', (req: Request, res: Response) => {
     res.send(helloMessage)
 })
 app.get('/products', (req: Request, res: Response) => {
-    res.send(products)
+    if (req.query.title) {
+        res.send(products.filter(p => p.title.indexOf(<string>req.query.title) > -1))
+    } else {
+        res.send(products)
+    }
 })
-app.get('/products/:productittle', (req: Request, res: Response) => {
-    let product = products.find(p => p.title === req.params.productittle);
+app.get('/products/:id', (req: Request, res: Response) => {
+    // @ts-ignore
+    let product = products.find(p => p.id === +req.params.id);
     if (product) {
         res.send(product)
     } else {
