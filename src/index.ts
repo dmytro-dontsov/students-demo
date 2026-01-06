@@ -1,9 +1,12 @@
-import express, {type Request, type Response} from 'express';
+import express, {type NextFunction, type Request, type Response} from 'express';
+
 const app = express()
 const port = process.env.PORT || 3000
 
 const products = [{id: 1, title: 'tomato'}, {id: 2, title: 'orange'}]
 const addresses = [{id: 1, value: 'Nezalejnosti 17'}, {id: 2, value: 'Salickaga11'}]
+
+app.use(express.json())
 
 app.get('/', (req: Request, res: Response) => {
     let helloMessage = 'Hello IT-INCUBATOR.EU';
@@ -15,6 +18,14 @@ app.get('/products', (req: Request, res: Response) => {
     } else {
         res.send(products)
     }
+})
+app.post('/products', (req: Request, res: Response) => {
+    const newProduct = {
+        id: +(new Date()),
+        title: req.body.title,
+    }
+    products.push(newProduct)
+    res.status(201).send(products)
 })
 app.get('/products/:id', (req: Request, res: Response) => {
     // @ts-ignore
