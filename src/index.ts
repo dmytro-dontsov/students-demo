@@ -25,6 +25,17 @@ app.get('/products/:id', (req: Request, res: Response) => {
         res.status(404).send('Not Found')
     }
 })
+app.delete('/products/:id', (req: Request, res: Response) => {
+    for (let i= 0; i < products.length; i++) {
+        // @ts-ignore
+        if (products[i].id === +req.params.id) {
+            products.splice(i, 1);
+            res.status(204).send()
+            return;
+        }
+    }
+    res.status(404).send('Not Found')
+})
 app.get('/addresses', (req: Request, res: Response) => {
     res.send(addresses)
 })
