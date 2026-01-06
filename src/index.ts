@@ -36,6 +36,16 @@ app.get('/products/:id', (req: Request, res: Response) => {
         res.status(404).send('Not Found')
     }
 })
+app.put('/products/:id', (req: Request, res: Response) => {
+    // @ts-ignore
+    let product = products.find(p => p.id === +req.params.id);
+    if (product) {
+        product.title = req.body.title;
+        res.send(product)
+    } else {
+        res.status(404).send('Not Found')
+    }
+})
 app.delete('/products/:id', (req: Request, res: Response) => {
     for (let i= 0; i < products.length; i++) {
         // @ts-ignore
